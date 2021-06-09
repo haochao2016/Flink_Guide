@@ -1,6 +1,9 @@
 package com.example.market_analysis
 
 import com.example.func.{MarketCountByChannel, SimulatedSource}
+import org.apache.flink.api.common.ExecutionConfig
+import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
+import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.windowing.time.Time
@@ -9,6 +12,7 @@ object AppMarketByChannel {
     def main(args: Array[String]): Unit = {
         val env = StreamExecutionEnvironment.getExecutionEnvironment
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime)
+        val config: ExecutionConfig = env.getConfig
         env.setParallelism(1)
 
         val dataStream = env.addSource(new SimulatedSource())
